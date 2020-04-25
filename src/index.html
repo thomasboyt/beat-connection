@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>Beat Connection</title>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <style>
+      html,
+      body,
+      pre {
+        font-family: monospace;
+        font-size: 16px;
+      }
+      .container {
+        max-width: 500px;
+        margin: 0 auto;
+      }
+      pre {
+        overflow: auto;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <div class="connect-info">
+        <p>
+          awaiting connections. your peer id is<br />
+          <span class="peer-id"></span>
+        </p>
+        <button class="connect-button">connect to peer</button>
+      </div>
+
+      <canvas width="0" height="0"></canvas>
+
+      <pre class="debug"></pre>
+    </div>
+  </body>
+</html>

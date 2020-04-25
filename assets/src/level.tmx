@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.2" tiledversion="1.3.4" orientation="orthogonal" renderorder="right-down" width="20" height="15" tilewidth="16" tileheight="16" infinite="0" nextlayerid="3" nextobjectid="4">
+ <editorsettings>
+  <export target="../build/level.json" format="json"/>
+ </editorsettings>
+ <tileset firstgid="1" name="Tiles" tilewidth="16" tileheight="16" tilecount="3" columns="3">
+  <image source="../build/tiles.png" width="48" height="16"/>
+ </tileset>
+ <layer id="1" name="tiles" width="20" height="15">
+  <data encoding="csv">
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,1,2,2,2,2,3,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,1,2,3,0,0,0,0,0,0,1,2,3,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,1,2,2,2,2,2,2,2,2,2,2,2,2,3,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+</data>
+ </layer>
+ <objectgroup id="2" name="things">
+  <object id="1" name="player_1" type="player" x="80" y="128" width="16" height="16">
+   <properties>
+    <property name="player" type="int" value="1"/>
+   </properties>
+  </object>
+  <object id="2" name="player_2" type="player" x="224" y="128" width="16" height="16">
+   <properties>
+    <property name="player" type="int" value="2"/>
+   </properties>
+  </object>
+  <object id="3" name="player_2" type="player" x="224" y="128" width="16" height="16">
+   <properties>
+    <property name="player" type="int" value="2"/>
+   </properties>
+  </object>
+ </objectgroup>
+</map>
