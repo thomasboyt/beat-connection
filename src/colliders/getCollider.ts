@@ -8,7 +8,7 @@ import { Vector2 } from '../util/vectorMaths';
 export function getCollider(
   world: World,
   entity: Entity,
-  delta: Vector2
+  delta: Vector2 = { x: 0, y: 0 }
 ): SAT.Box {
   const pos = world.get(entity, Position);
   const rect = world.get(entity, RectangleShape);

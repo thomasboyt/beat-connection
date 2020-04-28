@@ -7,6 +7,8 @@ export class Player extends Component {
 
   startX = 0;
   startY = 0;
+  facingX = 1;
+  lastInputs: number[] = [];
 }
 
 export function createPlayer(number: number, startPos: Vector2): Player {

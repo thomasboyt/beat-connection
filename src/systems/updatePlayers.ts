@@ -1,12 +1,13 @@
 import { InputValues } from '@tboyt/telegraph';
 import { PlayingState } from '../Game';
 import { Player } from '../components/Player';
-import { Velocity } from '../components/Velocity';
+import { Velocity, createVelocity } from '../components/Velocity';
 import { keyCodes } from '../util/keyCodes';
 import { Sprite } from '../components/Sprite';
 import { PLAYER_SPEED, PLAYER_JUMP_SPEED, GAME_HEIGHT } from '../constants';
 import { PlatformPhysics } from '../components/PlatformPhysics';
 import { Position } from '../components/Position';
+import { throwBomb } from './throwBomb';
 
 export function updatePlayers(
   state: PlayingState,
@@ -19,6 +20,10 @@ export function updatePlayers(
   for (const entity of players) {
     const player = world.get(entity, Player);
     const playerInputs = inputs[player.number - 1];
+    const lastInputs = player.lastInputs;
+
+    const tappedInput = (input: number): boolean =>
+      playerInputs.includes(input) && !lastInputs.includes(input);
 
     // did we fall off the dang world again
     const pos = world.get(entity, Position);
@@ -29,20 +34,40 @@ export function updatePlayers(
       });
     }
 
-    const newVel = world.patch(entity, Velocity, (vel) => {
+    const prevVel = world.get(entity, Velocity);
+    const newVel = createVelocity({ x: prevVel.x, y: prevVel.y });
+
+    // update velocity
+    if (newVel.x <= PLAYER_SPEED && newVel.x >= -PLAYER_SPEED) {
       if (playerInputs.includes(keyCodes.rightArrow)) {
-        vel.x = PLAYER_SPEED;
+        newVel.x = PLAYER_SPEED;
       } else if (playerInputs.includes(keyCodes.leftArrow)) {
-        vel.x = -PLAYER_SPEED;
+        newVel.x = -PLAYER_SPEED;
       } else {
-        vel.x = 0;
+        newVel.x = 0;
+      }
+    }
+
+    if (tappedInput(keyCodes.upArrow)) {
+      if (world.get(entity, PlatformPhysics).grounded) {
+        newVel.y = -PLAYER_JUMP_SPEED;
+      }
+    }
+
+    world.replace(entity, Velocity, newVel);
+
+    if (tappedInput(keyCodes.z)) {
+      throwBomb(world, entity);
+    }
+
+    world.patch(entity, Player, (player) => {
+      if (playerInputs.includes(keyCodes.leftArrow)) {
+        player.facingX = -1;
+      } else if (playerInputs.includes(keyCodes.rightArrow)) {
+        player.facingX = 1;
       }
 
-      if (playerInputs.includes(keyCodes.z)) {
-        if (world.get(entity, PlatformPhysics).grounded) {
-          vel.y = -PLAYER_JUMP_SPEED;
-        }
-      }
+      player.lastInputs = [...playerInputs];
     });
 
     world.patch(entity, Sprite, (sprite) => {

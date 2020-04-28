@@ -1,6 +1,7 @@
 import * as SAT from 'sat';
 import * as V from '../util/vectorMaths';
 import { CollisionMap, TileCollisionType, TileMap } from '../tiled';
+import { Collision, satRespToCollision } from './types';
 
 function getTile(
   collisionMap: CollisionMap,
@@ -14,19 +15,11 @@ function getTile(
   return collisionMap[y][x];
 }
 
-export interface TileMapCollision {
-  hit: {
-    overlap: number;
-    overlapVector: V.Vector2;
-  } | null;
-  resolved: V.Vector2;
-}
-
 export function getTileMapCollisions(
   tileMap: TileMap,
   collisionMap: CollisionMap,
   objAabb: SAT.Box
-): TileMapCollision {
+): Collision {
   const { tileWidth, tileHeight } = tileMap;
 
   // only check relevant tiles
@@ -63,27 +56,13 @@ export function getTileMapCollisions(
         // see "internal edges"
         // https://wildbunny.co.uk/blog/2011/12/14/how-to-make-a-2d-platform-game-part-2-collision-detection/
         const normal = V.unit(satResp.overlapV);
-        const adjacentTile = getTile(collisionMap, x + normal.x, y + normal.y);
+        const adjacentTile = getTile(collisionMap, x - normal.x, y - normal.y);
 
         if (adjacentTile) {
-          // TODO: maybe turn this back on? right now causes falling thru world
-          // not sure why
-          // continue;
+          continue;
         }
 
-        return {
-          hit: {
-            overlap: satResp.overlap,
-            overlapVector: {
-              x: satResp.overlapV.x,
-              y: satResp.overlapV.y,
-            },
-          },
-          resolved: {
-            x: objAabb.pos.x + objAabb.w / 2 + -satResp.overlapV.x,
-            y: objAabb.pos.y + objAabb.h / 2 + -satResp.overlapV.y,
-          },
-        };
+        return satRespToCollision(satResp, objAabb);
       }
     }
   }

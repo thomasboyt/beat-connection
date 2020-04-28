@@ -5,3 +5,4 @@ export const PLAYER_HEIGHT = 16;
 export const PLAYER_SPEED = 0.06;
 export const PLAYER_JUMP_SPEED = 0.25;
 export const GRAVITY = 0.01;
+export const BOMB_RADIUS = 3;

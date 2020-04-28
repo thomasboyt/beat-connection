@@ -34,6 +34,7 @@ export class World {
   private nextEntity = 1;
   private entities = new Set<Entity>();
   private components: ComponentStorage = new Map();
+  private destroyQueue = new Set<Entity>();
 
   private getComponentMap<T extends Component>(
     c: ComponentClass<T>
@@ -68,12 +69,22 @@ export class World {
     return entity;
   }
 
-  /** Remove one or more entities & their components. */
+  /**
+   * Remove one or more entities & their components. Will go into effect after
+   * update ends.
+   */
   destroy(...entities: Entity[]): void {
     for (const entity of entities) {
-      for (const componentMap of Object.values(this.components)) {
-        delete componentMap[entity];
+      this.destroyQueue.add(entity);
+    }
+  }
+
+  destroyQueued(): void {
+    for (const entity of this.destroyQueue) {
+      for (const componentMap of this.components.values()) {
+        componentMap.delete(entity);
       }
+      this.destroyQueue.delete(entity);
     }
   }
 

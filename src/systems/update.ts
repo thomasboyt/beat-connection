@@ -3,6 +3,8 @@ import { SinglePlayerState, MultiplayerState } from '../Game';
 import { updateSprites } from './updateSprites';
 import { updatePlayers } from './updatePlayers';
 import { updatePlatformPhysics } from './updatePlatformPhysics';
+import { updateBombs } from './updateBombs';
+import { updatePlayerBombCollisions } from './updatePlayerBombCollisions';
 
 export function update(
   state: SinglePlayerState | MultiplayerState,
@@ -12,4 +14,6 @@ export function update(
   updatePlayers(state, dt, inputs);
   updatePlatformPhysics(state, dt);
   updateSprites(state, dt);
+  updateBombs(state, dt);
+  updatePlayerBombCollisions(state);
 }

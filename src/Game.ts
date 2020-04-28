@@ -19,7 +19,7 @@ import { TileMap, loadTiledLevel } from './tiled';
 
 import { playerFactory } from './prefabs/player';
 import { update } from './systems/update';
-import { render } from './systems/render';
+import { draw } from './systems/draw';
 
 const FIXED_STEP = 1000 / 60;
 
@@ -66,11 +66,14 @@ export class SinglePlayerState extends GameState<GameData> {
 
     // create local player
     playerFactory(this.world, this.data.assets.level, 1);
+    // create ai player
+    playerFactory(this.world, this.data.assets.level, 2);
   }
 
   onUpdateFixed(dt: number): void {
     const inputs = this.inputter.getInputState();
-    update(this, dt, [inputs]);
+    update(this, dt, [inputs, []]);
+    this.world.destroyQueued();
   }
 }
 
@@ -155,6 +158,7 @@ export class MultiplayerState extends GameState<MultiplayerGameData> {
 
   private advanceFrame({ inputs }: SyncInputResultValue, dt: number): void {
     update(this, dt, inputs);
+    this.world.destroyQueued();
     this.telegraph.advanceFrame();
   }
 
@@ -319,7 +323,7 @@ export class Game {
       }
 
       const lagOffset = lag / FIXED_STEP;
-      render(this.ctx, this.state!, lagOffset);
+      draw(this.ctx, this.state!, lagOffset);
 
       lastTime = time;
       requestAnimationFrame(loop);
